@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,Path
 import json
 
 app = FastAPI()
@@ -20,5 +20,12 @@ def About():
 @app.get("/patients")
 def Main():
     return loader()
+@app.get("/view/{patient_id}")
+def view_patient(patient_id:int = Path(...,description="Id of the patient",example="1")):
+    data = loader()
+    for patient in data:
+        if patient["id"] == patient_id:
+            return patient
+        return {"error":"cant fetch patient data"}
 
 
